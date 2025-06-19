@@ -29,6 +29,7 @@ lambda_range = [1.47e-6, 1.64e-6];
 do_apodize = true;
 show_osa = true;
 do_amplitude_correction = false;
+do_log = true; % show only cross-pol as log scale plot
 
 % approximate amplitude ratio TM/TE, calibrated using unpolarized source
 pol_factor = 0.36; 
@@ -53,14 +54,10 @@ end
 % Plotting
 te_colors = crameri('devon', num_files+2); % +2 to avoid too-white trace
 tm_colors = flipud(crameri('lajolla', num_files+2));
-%figure(Units = "centimeters", Position=[3 3 3.8 4]);
-figure(Units = "centimeters", Position=[3 3 6 4]);
+figure(Units = "centimeters", Position=[3 3 3.7 4]);
+%figure(Units = "centimeters", Position=[3 3 6 4]);
 %figure(Units = "centimeters", Position=[3 3 4 2.3]);
 tiledlayout(2,1, Padding="tight", TileSpacing="tight");
-nexttile(1); 
-hold on;  ylim([0,1]);
-nexttile(2);
-hold on; ylim([0,1]);
 for fileIdx = 1:num_files
     load(fullfile(osa_dir, osa_list(fileIdx).name), 'osa_lambda', 'osa_power_dbm');
     osa_power_lin = 10.^(osa_power_dbm/10);
@@ -74,10 +71,18 @@ for fileIdx = 1:num_files
         normalize_TM = max(this_tm);
     end
     nexttile(1);
-    plot(plot_lambda, (this_te/normalize_TE), Color = te_colors(fileIdx,:));
+    if(do_log && strcmp(which_polarization,'TM'))
+        semilogy(plot_lambda, (this_te/normalize_TE), Color = te_colors(fileIdx,:)); hold on;
+    else
+        plot(plot_lambda, (this_te/normalize_TE), Color = te_colors(fileIdx,:)); hold on;
+    end
     %title("TE");
     nexttile(2);
-    plot(plot_lambda, (this_tm/normalize_TM), Color = tm_colors(fileIdx,:));
+    if(do_log && strcmp(which_polarization,'TE'))
+        semilogy(plot_lambda, (this_tm/normalize_TM), Color = tm_colors(fileIdx,:)); hold on;
+    else
+        plot(plot_lambda, (this_tm/normalize_TM), Color = tm_colors(fileIdx,:)); hold on;
+    end
     %title("TM");
     
     if(strcmp(which_polarization,'TE'))
@@ -93,10 +98,22 @@ end
 nexttile(1);
 xlim([1520,1630]);
 xticks([1520,1575,1630]); xticklabels([]);
-yticks([0,1]);
+if(do_log && strcmp(which_polarization,'TM'))
+    ylim([1e-3,1]); 
+    yticks([1e-3,1e-2,1e-1,1]);
+else
+    ylim([0,1]);
+    yticks([0,1]);
+end
 set(gca, 'fontsize', 7, 'ticklength', [0.03, 0.03]);
 nexttile(2);
 xlim([1520,1630]);
 xticks([1520,1575,1630]);
-yticks([0,1]);
+if(do_log && strcmp(which_polarization,'TE'))
+    ylim([1e-3,1]); 
+    yticks([1e-3,1e-2,1e-1,1]);
+else
+    ylim([0,1]);
+    yticks([0,1]);
+end
 set(gca, 'fontsize', 7, 'ticklength', [0.03, 0.03]);

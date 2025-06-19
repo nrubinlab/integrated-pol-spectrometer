@@ -50,7 +50,8 @@ function [filtered_data, final_spectrum] = recover_spectrum(...
     %this_centered = measured_x./ movmean(measured_x,movmean_length) - 1;
     % another method (that is a bit slower but seems better) simply takes a
     % high pass filter 
-    this_centered = highpass(measured_x, 0.05);
+    %this_centered = highpass(measured_x, 0.05);
+    this_centered = detrend(measured_x, 4); % MUCH MUCH faster than highpass
     % apodize it so we don't get sidelobes in our reconstruction
     this_window = hann(length(this_centered))';
     this_apodized = this_window.*this_centered;

@@ -30,12 +30,12 @@ end
 % normalize_type = "TM";
 
 % d
-measure_dirname ='data\20241014\spectra_SLED\SLED_45_beating_1';
-normalize_type = "TE";
+% measure_dirname ='data\20241014\spectra_SLED\SLED_45_beating_1';
+% normalize_type = "TE";
 
 % e, normalize_type = "same"
-% measure_dirname ='data\20241014\spectra_laser\1480TM_1630TE';
-% normalize_type = "same";
+measure_dirname ='data\20241014\spectra_laser\1480TM_1630TE';
+normalize_type = "same";
 
 % f
 % measure_dirname ='data\20241014\spectra_SLED\SLED_TE_1480_TM';
@@ -107,11 +107,11 @@ output_lambda = linspace(lambda_range(1),lambda_range(2), 1001);
 plot_lambda = 1e9*output_lambda;
 c0 = 299792458;
 desiredNu = c0./output_lambda;
+tic
 [interfT, interfP, filteredP, TE_reconstruction] = ...
         reconstruct_spectrum(measure_file, TE_calib_file, desiredNu, do_apodize);
 [~, ~, ~, TM_reconstruction] = ...
         reconstruct_spectrum(measure_file, TM_calib_file, desiredNu, do_apodize);
-
 % plotting
 figure("Units", "centimeters", "Position", [5 1 figsize]);
 if(show_interferogram), num_tiles = 3; else, num_tiles = 2; end
