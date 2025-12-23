@@ -2,7 +2,14 @@
 % Load a calibration directory
 clear;
 % this is the easiest way way to pick calibration files
-[~, TE_calib_file, TM_calib_file] = prompt_load_calibration(); 
+% [~, TE_calib_file, TM_calib_file] = prompt_load_calibration(); 
+% for panes a-g, use these calibration files
+TE_calib_file = "data\20241014\calibrations\calib3\TE.mat";
+TM_calib_file = "data\20241014\calibrations\calib3\TM.mat";
+% for pane h, use this calibration file
+% (this data was taken a year later during revisions)
+% TE_calib_file = "data\20251021\calib2\TE.mat";
+% TM_calib_file = "data\20251021\calib2\TM.mat";
 %% Load measurement folder
 % for simplicity, data consists of files named 'measurement', 'OSA_TE', and
 % 'OSA_TM' in a single folder
@@ -30,12 +37,12 @@ end
 % normalize_type = "TM";
 
 % d
-% measure_dirname ='data\20241014\spectra_SLED\SLED_45_beating_1';
-% normalize_type = "TE";
+measure_dirname ='data\20241014\spectra_SLED\SLED_45_beating_1';
+normalize_type = "TE";
 
 % e, normalize_type = "same"
-measure_dirname ='data\20241014\spectra_laser\1480TM_1630TE';
-normalize_type = "same";
+% measure_dirname ='data\20241014\spectra_laser\1480TM_1630TE';
+% normalize_type = "same";
 
 % f
 % measure_dirname ='data\20241014\spectra_SLED\SLED_TE_1480_TM';
@@ -46,7 +53,7 @@ normalize_type = "same";
 % normalize_type = "TE";
 
 % h
-% measure_dirname ='data\20241014\spectra_SLED\SLED_45_beating_2';
+% measure_dirname ='data\20251021\ASE_etalon_fiber20';
 % normalize_type = "TE";
 
 
